@@ -55,7 +55,7 @@ public class UrnaEletronic {
        
     }
 
-    // Método para votar e também é reutilizável para senador e presidente
+    // método para votar e também é reutilizável para senador e presidente
     static void votar(Scanner sc, Candidato[] candidatos, String cargo) {
         System.out.println("\n" + cargo.toUpperCase() + ":");
         for (Candidato c : candidatos) {
@@ -86,7 +86,7 @@ public class UrnaEletronic {
         }
     }
 
-    // Método para mostrar resultados
+    // método para mostrar resultados
     static void mostrarResultados(Candidato[] senadores, Candidato[] presidentes) {
         System.out.println("\n=== RESULTADOS FINAIS ===");
 
