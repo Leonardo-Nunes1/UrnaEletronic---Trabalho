@@ -52,7 +52,7 @@ public class UrnaEletronic {
         }
 
         mostrarResultados(senadores, presidentes);
-        scanner.close();
+       
     }
 
     // Método para votar (reutilizável para senador e presidente)
