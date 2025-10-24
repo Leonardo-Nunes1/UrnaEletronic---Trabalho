@@ -59,14 +59,14 @@ public class UrnaEletronic {
         while (continuar) {
             System.out.println("\n--- NOVA VOTAÇÃO ---");
 
-            // Votar para dois Senadores
+            // Vota para DOIS Senadores
             System.out.println("\n=== VOTAÇÃO PARA SENADOR ===");
             System.out.println("Você deve votar em DOIS candidatos para Senador");
             
             votarSenador(scanner, senadores, 1); // Primeiro voto para Senador
             votarSenador(scanner, senadores, 2); // Segundo voto para Senador
             
-            // depois votar para Presidente
+            // Depois vota para Presidente
             votarPresidente(scanner, presidentes);
 
             System.out.print("\nDeseja continuar a votação? (s/n): ");
@@ -79,7 +79,7 @@ public class UrnaEletronic {
         mostrarResultados(senadores, presidentes);
     }
 
-    // método para votar para senador com dois votos
+    // método para votar para Senador (dois votos)
     static void votarSenador(Scanner sc, Candidato[] senadores, int numeroVoto) {
         System.out.println("\n" + numeroVoto + "º VOTO PARA SENADOR:");
         for (Candidato s : senadores) {
