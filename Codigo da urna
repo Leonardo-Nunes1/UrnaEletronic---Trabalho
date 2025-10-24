@@ -21,7 +21,7 @@ public class UrnaEletronic {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Dois candidatos ao Senado (como o trabalho pede)
+        // Dois candidatos ao Senado 
         Candidato[] senadores = {
             new Candidato("Marconi Perillo (PSDB)", 45),
             new Candidato("Jorge Kajuru (PRP)", 44)
