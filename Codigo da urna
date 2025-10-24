@@ -6,7 +6,6 @@ class Candidato {
     int numero;
     int votos;
 
-    // construtor, ele cria um candidato com nome e número
     Candidato(String nome, int numero) {
         this.nome = nome;
         this.numero = numero;
@@ -15,147 +14,106 @@ class Candidato {
 }
 
 public class UrnaEletronic {
-    
+
+    static int votosBrancos = 0;
+    static int votosNulos = 0;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
-        // cria os candidatos do Senado
+
+        // Dois candidatos ao Senado (como o trabalho pede)
         Candidato[] senadores = {
-            new Candidato("Agenor (MDB)", 150),
-            new Candidato("Fabricio Rosa (PSOL)", 500),
-            new Candidato("Jorge Kajuru (PRP)", 444),
-            new Candidato("Lúcia Vânia (PSB)", 405),
-            new Candidato("Luis César Bueno (PT)", 135),
-            new Candidato("Marconi Perillo (PSDB)", 456),
-            new Candidato("Professor Alessandro Aquino (PCO)", 290),
-            new Candidato("Professora Geli (PT)", 131),
-            new Candidato("Professora Magda Borges (PCB)", 210),
-            new Candidato("Santana Pires (Patriota)", 510),
-            new Candidato("Vanderlan (PP)", 111),
-            new Candidato("Wilder Morais (DEM)", 251)
+            new Candidato("Marconi Perillo (PSDB)", 45),
+            new Candidato("Jorge Kajuru (PRP)", 44)
         };
-        
-        // cria os candidatos da Presidência
+
+        // Candidatos à Presidência
         Candidato[] presidentes = {
-            new Candidato("Bolsonaro", 17),
-            new Candidato("HADDAD", 13),
-            new Candidato("CIRO", 12),
-            new Candidato("BOULOS", 50),
-            new Candidato("CABO DACIOLO", 51),
-            new Candidato("MARINA SILVA", 18),
-            new Candidato("GERALDO ALCKMIN", 45),
-            new Candidato("ÁLVARO DIAS", 19),
-            new Candidato("HENRIQUE MEIRELLES", 15),
-            new Candidato("JOÃO AMOEDO", 30)
+            new Candidato("Bolsonaro (PL)", 17),
+            new Candidato("Lula (PT)", 13),
+            new Candidato("Ciro Gomes (PDT)", 12),
+            new Candidato("Simone Tebet (MDB)", 15)
         };
-        
-        int brancos = 0;
-        int nulos = 0;
-        
+
         System.out.println("=== URNA ELETRÔNICA ===");
-        
+
         boolean continuar = true;
-        
-        // loop de votação
         while (continuar) {
-            System.out.println("\n--- VOTAÇÃO ---");
-            
-            // votação para Senador
-            System.out.println("\nSENADOR:");
-            for (Candidato s : senadores) {
-                System.out.println(s.nome + " - " + s.numero);
-            }
-            System.out.print("Digite o número (0=branco): ");
-            int voto = scanner.nextInt();
-            
-            if (voto == 0) {
-                brancos++;
-                System.out.println("Voto BRANCO");
-            } else {
-                boolean achou = false;
-                for (Candidato s : senadores) {
-                    if (s.numero == voto) {
-                        s.votos++;
-                        System.out.println("Voto: " + s.nome);
-                        achou = true;
-                        break;
-                    }
-                }
-                if (!achou) {
-                    nulos++;
-                    System.out.println("Voto NULO");
-                }
-            }
-            
-            // votação para presidente
-            System.out.println("\nPRESIDENTE:");
-            for (Candidato p : presidentes) {
-                System.out.println(p.nome + " - " + p.numero);
-            }
-            System.out.print("Digite o número (0=branco): ");
-            voto = scanner.nextInt();
-            
-            if (voto == 0) {
-                brancos++;
-                System.out.println("Voto BRANCO");
-            } else {
-                boolean achou = false;
-                for (Candidato p : presidentes) {
-                    if (p.numero == voto) {
-                        p.votos++;
-                        System.out.println("Voto: " + p.nome);
-                        achou = true;
-                        break;
-                    }
-                }
-                if (!achou) {
-                    nulos++;
-                    System.out.println("Voto NULO");
-                }
-            }
-            
-            // pergunta se quer continuar a votaçao
-            System.out.print("\nContinuar? (s/n): ");
-            String resposta = scanner.next();
-            if (resposta.equalsIgnoreCase("n")) {
+            System.out.println("\n--- NOVA VOTAÇÃO ---");
+
+            votar(scanner, senadores, "Senador");
+            votar(scanner, presidentes, "Presidente");
+
+            System.out.print("\nDeseja continuar a votação? (s/n): ");
+            String resp = scanner.next();
+            if (resp.equalsIgnoreCase("n")) {
                 continuar = false;
             }
         }
-        
-        // mostra os resultados
-        System.out.println("\n=== RESULTADOS ===");
-        
-        // a) votos por candidato
-        System.out.println("\nSENADORES:");
+
+        mostrarResultados(senadores, presidentes);
+        scanner.close();
+    }
+
+    // Método para votar (reutilizável para senador e presidente)
+    static void votar(Scanner sc, Candidato[] candidatos, String cargo) {
+        System.out.println("\n" + cargo.toUpperCase() + ":");
+        for (Candidato c : candidatos) {
+            System.out.println(c.nome + " - " + c.numero);
+        }
+        System.out.print("Digite o número do seu voto (0 = Branco): ");
+        int voto = sc.nextInt();
+
+        if (voto == 0) {
+            votosBrancos++;
+            System.out.println("Voto BRANCO registrado.");
+            return;
+        }
+
+        boolean achou = false;
+        for (Candidato c : candidatos) {
+            if (c.numero == voto) {
+                c.votos++;
+                System.out.println("Voto registrado para: " + c.nome);
+                achou = true;
+                break;
+            }
+        }
+
+        if (!achou) {
+            votosNulos++;
+            System.out.println("Voto NULO.");
+        }
+    }
+
+    // Método para mostrar resultados
+    static void mostrarResultados(Candidato[] senadores, Candidato[] presidentes) {
+        System.out.println("\n=== RESULTADOS FINAIS ===");
+
+        System.out.println("\n--- SENADOR ---");
         for (Candidato s : senadores) {
-            if (s.votos > 0) {
-                System.out.println(s.nome + ": " + s.votos + " votos");
-            }
+            System.out.println(s.nome + ": " + s.votos + " voto(s)");
         }
-        
-        System.out.println("\nPRESIDENTES:");
+
+        System.out.println("\n--- PRESIDENTE ---");
         for (Candidato p : presidentes) {
-            if (p.votos > 0) {
-                System.out.println(p.nome + ": " + p.votos + " votos");
-            }
+            System.out.println(p.nome + ": " + p.votos + " voto(s)");
         }
-        
-        // b) e c) nulos e brancos
-        System.out.println("\nVotos NULOS: " + nulos);
-        System.out.println("Votos BRANCOS: " + brancos);
-        
-        // d) e e) porcentagens
+
+        System.out.println("\nVotos NULOS: " + votosNulos);
+        System.out.println("Votos BRANCOS: " + votosBrancos);
+
         int totalValidos = 0;
         for (Candidato s : senadores) totalValidos += s.votos;
         for (Candidato p : presidentes) totalValidos += p.votos;
-        
+
         if (totalValidos > 0) {
-            double porcNulos = (nulos * 100.0) / totalValidos;
-            double porcBrancos = (brancos * 100.0) / totalValidos;
-            System.out.printf("Nulos: %.2f%%\n", porcNulos);
-            System.out.printf("Brancos: %.2f%%\n", porcBrancos);
+            double porcNulos = (votosNulos * 100.0) / totalValidos;
+            double porcBrancos = (votosBrancos * 100.0) / totalValidos;
+            System.out.printf("Porcentagem NULOS: %.2f%%\n", porcNulos);
+            System.out.printf("Porcentagem BRANCOS: %.2f%%\n", porcBrancos);
+        } else {
+            System.out.println("Nenhum voto válido foi registrado.");
         }
-        
- 
     }
 }
