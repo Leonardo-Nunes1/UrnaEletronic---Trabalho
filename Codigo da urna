@@ -1,0 +1,161 @@
+package com.mycompany.urnaeletronic;
+import java.util.Scanner;
+
+class Candidato {
+    String nome;
+    int numero;
+    int votos;
+
+    // construtor, ele cria um candidato com nome e número
+    Candidato(String nome, int numero) {
+        this.nome = nome;
+        this.numero = numero;
+        this.votos = 0;
+    }
+}
+
+public class UrnaEletronic {
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // cria os candidatos do Senado
+        Candidato[] senadores = {
+            new Candidato("Agenor (MDB)", 150),
+            new Candidato("Fabricio Rosa (PSOL)", 500),
+            new Candidato("Jorge Kajuru (PRP)", 444),
+            new Candidato("Lúcia Vânia (PSB)", 405),
+            new Candidato("Luis César Bueno (PT)", 135),
+            new Candidato("Marconi Perillo (PSDB)", 456),
+            new Candidato("Professor Alessandro Aquino (PCO)", 290),
+            new Candidato("Professora Geli (PT)", 131),
+            new Candidato("Professora Magda Borges (PCB)", 210),
+            new Candidato("Santana Pires (Patriota)", 510),
+            new Candidato("Vanderlan (PP)", 111),
+            new Candidato("Wilder Morais (DEM)", 251)
+        };
+        
+        // cria os candidatos da Presidência
+        Candidato[] presidentes = {
+            new Candidato("Bolsonaro", 17),
+            new Candidato("HADDAD", 13),
+            new Candidato("CIRO", 12),
+            new Candidato("BOULOS", 50),
+            new Candidato("CABO DACIOLO", 51),
+            new Candidato("MARINA SILVA", 18),
+            new Candidato("GERALDO ALCKMIN", 45),
+            new Candidato("ÁLVARO DIAS", 19),
+            new Candidato("HENRIQUE MEIRELLES", 15),
+            new Candidato("JOÃO AMOEDO", 30)
+        };
+        
+        int brancos = 0;
+        int nulos = 0;
+        
+        System.out.println("=== URNA ELETRÔNICA ===");
+        
+        boolean continuar = true;
+        
+        // loop de votação
+        while (continuar) {
+            System.out.println("\n--- VOTAÇÃO ---");
+            
+            // votação para Senador
+            System.out.println("\nSENADOR:");
+            for (Candidato s : senadores) {
+                System.out.println(s.nome + " - " + s.numero);
+            }
+            System.out.print("Digite o número (0=branco): ");
+            int voto = scanner.nextInt();
+            
+            if (voto == 0) {
+                brancos++;
+                System.out.println("Voto BRANCO");
+            } else {
+                boolean achou = false;
+                for (Candidato s : senadores) {
+                    if (s.numero == voto) {
+                        s.votos++;
+                        System.out.println("Voto: " + s.nome);
+                        achou = true;
+                        break;
+                    }
+                }
+                if (!achou) {
+                    nulos++;
+                    System.out.println("Voto NULO");
+                }
+            }
+            
+            // votação para presidente
+            System.out.println("\nPRESIDENTE:");
+            for (Candidato p : presidentes) {
+                System.out.println(p.nome + " - " + p.numero);
+            }
+            System.out.print("Digite o número (0=branco): ");
+            voto = scanner.nextInt();
+            
+            if (voto == 0) {
+                brancos++;
+                System.out.println("Voto BRANCO");
+            } else {
+                boolean achou = false;
+                for (Candidato p : presidentes) {
+                    if (p.numero == voto) {
+                        p.votos++;
+                        System.out.println("Voto: " + p.nome);
+                        achou = true;
+                        break;
+                    }
+                }
+                if (!achou) {
+                    nulos++;
+                    System.out.println("Voto NULO");
+                }
+            }
+            
+            // pergunta se quer continuar a votaçao
+            System.out.print("\nContinuar? (s/n): ");
+            String resposta = scanner.next();
+            if (resposta.equalsIgnoreCase("n")) {
+                continuar = false;
+            }
+        }
+        
+        // mostra os resultados
+        System.out.println("\n=== RESULTADOS ===");
+        
+        // a) votos por candidato
+        System.out.println("\nSENADORES:");
+        for (Candidato s : senadores) {
+            if (s.votos > 0) {
+                System.out.println(s.nome + ": " + s.votos + " votos");
+            }
+        }
+        
+        System.out.println("\nPRESIDENTES:");
+        for (Candidato p : presidentes) {
+            if (p.votos > 0) {
+                System.out.println(p.nome + ": " + p.votos + " votos");
+            }
+        }
+        
+        // b) e c) nulos e brancos
+        System.out.println("\nVotos NULOS: " + nulos);
+        System.out.println("Votos BRANCOS: " + brancos);
+        
+        // d) e e) porcentagens
+        int totalValidos = 0;
+        for (Candidato s : senadores) totalValidos += s.votos;
+        for (Candidato p : presidentes) totalValidos += p.votos;
+        
+        if (totalValidos > 0) {
+            double porcNulos = (nulos * 100.0) / totalValidos;
+            double porcBrancos = (brancos * 100.0) / totalValidos;
+            System.out.printf("Nulos: %.2f%%\n", porcNulos);
+            System.out.printf("Brancos: %.2f%%\n", porcBrancos);
+        }
+        
+ 
+    }
+}
